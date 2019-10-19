@@ -1,5 +1,9 @@
 import React from 'react';
+<<<<<<< HEAD
 import { fade,makeStyles } from '@material-ui/core/styles';
+=======
+import { makeStyles } from '@material-ui/core/styles';
+>>>>>>> master
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
@@ -15,17 +19,23 @@ import { Typography } from '@material-ui/core';
 import AppBar from "@material-ui/core/AppBar";
 import ToolBar from "@material-ui/core/Toolbar";
 import StarIcon from '@material-ui/icons/Star';
+<<<<<<< HEAD
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { mergeClasses } from '@material-ui/styles';
 
 const useStyles = makeStyles(theme=>({
+=======
+
+const useStyles = makeStyles({
+>>>>>>> master
   list: {
     width: 250,
   },
   fullList: {
     width: 'auto',
   },
+<<<<<<< HEAD
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -59,6 +69,9 @@ const useStyles = makeStyles(theme=>({
     },
   }
 }));
+=======
+});
+>>>>>>> master
 
 export default function TemporaryDrawer() {
   const classes = useStyles();
@@ -123,6 +136,7 @@ export default function TemporaryDrawer() {
                         <MenuIcon onClick={toggleDrawer('left', true)} style={{color: 'white',marginLeft:15}}  />
                         <Typography class="whiteText">Find Fud 4 Me</Typography>
                     </IconButton>
+<<<<<<< HEAD
 
                             <InputBase style={{marginLeft:15}}
                               placeholder="Search…"
@@ -130,6 +144,9 @@ export default function TemporaryDrawer() {
                             />
 
                       
+=======
+                        
+>>>>>>> master
                     </ToolBar>
                 </AppBar>
       <Drawer open={state.left} onClose={toggleDrawer('left', false)}>

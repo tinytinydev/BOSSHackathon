@@ -34,6 +34,26 @@
   height: 100vh;
 }
 
+<<<<<<< HEAD
+=======
+.listContainer {
+  background-color: white;
+}
+
+.estabContainer {
+  padding: 0.8em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.estabName {
+  margin: 0 0 0.5em;
+}
+
+.estabRating {
+  margin: 0;
+}
+
+>>>>>>> master
 .appBar{
   background-color: #EB422D;
 

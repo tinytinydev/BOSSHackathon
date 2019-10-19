@@ -12,8 +12,7 @@ class MapView extends React.Component {
             lat: 1.352,
             lng: 103.82,
             map: undefined,
-            marker: undefined,
-            markerRadius: undefined,
+            markers: [],
             geocoder: undefined,
 
             proximityRange: this.props.proximityRange || 50
@@ -34,7 +33,7 @@ class MapView extends React.Component {
         if(window.google === undefined || window.google.maps === undefined) {
             // Adding GMaps API's script to body
             // Asynchronously load script
-            const URL = `${API.GOOGLEMAPS_BASE}?key=${API.GOOGLEMAPS_KEY}&region=SG&callback=initMap`;
+            const URL = `${API.GOOGLEMAPS_BASE}?key=${API.GOOGLEMAPS_KEY}&libraries=places&region=SG&callback=initMap`;
             let script = document.createElement('script');
             script.src = URL;
             script.async = true;
@@ -202,24 +201,38 @@ class MapView extends React.Component {
     onGeocodeSuccess(position) {
         console.log(position);
         const latLng = new window.google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        this.retrieveNearbyFoodPlaces(position.coords.latitude, position.coords.longitude);
 
-        getNearbyFood(position.coords.latitude, position.coords.longitude).then(data => {
-            console.log(data.data.results);
-            const markers = [];
-            data.data.results.forEach(result => {
-                let marker = new window.google.maps.Marker({
-                    map: this.state.map,
-                    animation: window.google.maps.Animation.DROP,
-                    position: result.geometry.location
-                });
-                markers.push(marker);
-            })
+
+        /*this.setState({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+        });*/
+    }
+
+    async retrieveNearbyFoodPlaces(latitude, longitude) {
+        const nearbyFoodPlaces = await getNearbyFood(latitude, longitude);
+        const markers = this.state.markers;
+        markers.forEach((marker) => {
+            marker.setMap(null);
+        });
+
+        nearbyFoodPlaces.data.results.forEach(result => {
+            let marker = new window.google.maps.Marker({
+                map: this.state.map,
+                animation: window.google.maps.Animation.DROP,
+                position: result.geometry.location,
+                title: result.name
+            });
+            markers.push(marker);
         });
 
         this.setState({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-        });
+            markers: markers,
+            nearbyFoodPlaces: nearbyFoodPlaces.data.results
+        }, () => {
+            this.props.onNearbyFoodPlacesChangeListener(nearbyFoodPlaces.data.results);
+        })
     }
 }
 
