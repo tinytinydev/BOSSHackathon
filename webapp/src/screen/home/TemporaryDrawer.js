@@ -2,8 +2,6 @@ import React from 'react';
 
 import { fade,makeStyles } from '@material-ui/core/styles';
 
-import { makeStyles } from '@material-ui/core/styles';
-
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
@@ -68,7 +66,7 @@ const useStyles = makeStyles(theme=>({
 
 
 
-export default function TemporaryDrawer() {
+export default function TemporaryDrawer(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -135,6 +133,7 @@ export default function TemporaryDrawer() {
                             <InputBase style={{marginLeft:15}}
                               placeholder="Search…"
                               inputProps={{ 'aria-label': 'search' }}
+                                       onChange={event => props.onUserSearchListener(event.target.value)}
                             />
 
                       
@@ -146,4 +145,8 @@ export default function TemporaryDrawer() {
 
     </div>
   );
+}
+
+function onUserSearch(searchQuery) {
+  this.props.onUserSearchListener(searchQuery);
 }

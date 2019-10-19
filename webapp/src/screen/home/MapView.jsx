@@ -43,6 +43,12 @@ class MapView extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevProps.userSearchQuery != this.props.userSearchQuery) {
+            console.log("change");
+        }
+    }
+
     render() {
         return (
             <div className="mapContainer">
@@ -69,14 +75,14 @@ class MapView extends React.Component {
 
 
         // Address Autocomplete Fields
-        /*let autoComplete = new window.google.maps.places.Autocomplete(this.locationInput.current, {
+        let autoComplete = new window.google.maps.places.Autocomplete(this.locationInput.current, {
             //Restricted to Singapore address only!
             componentRestrictions: {country: 'sg'}
         });
         autoComplete.setFields(['address_components', 'geometry', 'types']);
         autoComplete.bindTo('bounds', map);
 
-        autoComplete.addListener('place_changed', () => {
+        /*autoComplete.addListener('place_changed', () => {
             this.changeLocation(autoComplete.getPlace());
         });*/
 
@@ -218,11 +224,17 @@ class MapView extends React.Component {
         });
 
         nearbyFoodPlaces.data.results.forEach(result => {
+            let infoWindow = new window.google.maps.InfoWindow({
+                content: result.name
+            });
             let marker = new window.google.maps.Marker({
                 map: this.state.map,
                 animation: window.google.maps.Animation.DROP,
                 position: result.geometry.location,
-                title: result.name
+                title: result.name,
+            });
+            marker.addListener('click', function() {
+                infoWindow.open(marker.getMap(), marker);
             });
             markers.push(marker);
         });

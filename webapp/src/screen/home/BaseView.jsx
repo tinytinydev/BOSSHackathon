@@ -12,18 +12,27 @@ class BaseView extends React.Component {
         super(props);
 
         this.state = ({
-            nearbyFoodPlaces: []
+            nearbyFoodPlaces: [],
+            userSearch: ""
         });
 
         this.onNearbyFoodPlacesChange = this.onNearbyFoodPlacesChange.bind(this);
+        this.onUserSearch = this.onUserSearch.bind(this);
     }
 
     render() {
-        return (
+        /*return (
             <div className="AppContainer">
-                <TemporaryDrawer></TemporaryDrawer>
+                <TemporaryDrawer/>
                 <ListView nearbyFoodPlaces={this.state.nearbyFoodPlaces}/>
                 <MapView onNearbyFoodPlacesChangeListener={this.onNearbyFoodPlacesChange}/>
+            </div>
+
+        );*/
+        return (
+            <div className="AppContainer">
+                <TemporaryDrawer onUserSearchListener={this.onUserSearch}/>
+                <MapView onNearbyFoodPlacesChangeListener={this.onNearbyFoodPlacesChange} userSearchQuery={this.state.userSearch}/>
             </div>
 
         );
@@ -32,6 +41,12 @@ class BaseView extends React.Component {
     onNearbyFoodPlacesChange(nearbyFoodPlaces) {
         this.setState({
             nearbyFoodPlaces: nearbyFoodPlaces
+        })
+    }
+
+    onUserSearch(searchString) {
+        this.setState({
+            userSearch: searchString
         })
     }
 }
