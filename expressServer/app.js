@@ -5,8 +5,8 @@ const path = require('path');
 
 
 
-var extended = require('./extended')
-app.use('/extended',extended) //Add new file to path
+var loc = require('./locations')
+app.use('/locations',loc) //Add new file to path
 
 
 //Read json data
