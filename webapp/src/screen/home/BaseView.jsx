@@ -1,9 +1,8 @@
 import React from 'react';
 import MapView from "./MapView";
-<<<<<<< HEAD
-=======
+
 import ListView from "./ListView";
->>>>>>> master
+
 import TemporaryDrawer from './TemporaryDrawer';
 
 
