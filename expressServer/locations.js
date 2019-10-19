@@ -17,7 +17,7 @@ router.use(express.json())
 
 
 //Get all locations
-router.get('/getnearbyfood/latlong/:latlong',function(req,res){
+router.get('/getnearbyfood/latlong/:latlong',function(req,resp){
 
     var allRest = googleMapAPI + "&type=restaurant&location="+req.params.latlong + "&radius=1500";
     console.log(allRest)
@@ -33,6 +33,7 @@ router.get('/getnearbyfood/latlong/:latlong',function(req,res){
                     var data = JSON.parse(json);
                     // data is available here:
                     console.log(data);
+                    resp.send(data)
                 } catch (e) {
                     console.log('Error parsing JSON!');
                 }
