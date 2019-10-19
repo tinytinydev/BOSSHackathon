@@ -1,11 +1,16 @@
 import React from 'react';
 import * as API from "../../constants/APIUtil";
+import {getNearbyFood} from "../../service/Maps";
+
+
 
 class MapView extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = ({
+            lat: 1.352,
+            lng: 103.82,
             map: undefined,
             marker: undefined,
             markerRadius: undefined,
@@ -18,6 +23,7 @@ class MapView extends React.Component {
         this.mapView = React.createRef();
 
         this.changeProximity = this.changeProximity.bind(this);
+        this.onGeocodeSuccess = this.onGeocodeSuccess.bind(this);
     }
 
     componentDidMount() {
@@ -50,10 +56,7 @@ class MapView extends React.Component {
 
     onGMapsReady() {
         // The javascript object (google.maps) lives in the window object!
-        // Attempt to center it at the centre of Singapore
-        const lat = this.props.lat || 1.352;
-        const lng = this.props.lng || 103.82;
-        const latLng = {lat: lat, lng: lng};
+        const latLng = new window.google.maps.LatLng(this.state.lat, this.state.lng);
 
         let map = new window.google.maps.Map(this.mapView.current, {
             center: latLng,
@@ -61,24 +64,6 @@ class MapView extends React.Component {
             mapTypeControl: false,
             streetViewControl: false,
             fullscreenControl: false
-        });
-
-        // Creates marker
-        let marker = new window.google.maps.Marker({
-            map: map,
-            animation: window.google.maps.Animation.DROP,
-            position: latLng
-        });
-
-        let markerRadius = new window.google.maps.Circle({
-            strokeColor: '#F7931E',
-            strokeOpacity: 0.4,
-            strokeWeight: 2,
-            fillColor: '#F7931E',
-            fillOpacity: 0.3,
-            map: map,
-            center: latLng,
-            radius: this.props.proximityRange || 50
         });
 
         let geocoder = new window.google.maps.Geocoder();
@@ -96,13 +81,15 @@ class MapView extends React.Component {
             this.changeLocation(autoComplete.getPlace());
         });*/
 
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position => this.onGeocodeSuccess(position)));
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
 
         this.setState({
             map: map,
-            marker: marker,
-            markerRadius: markerRadius,
             geocoder: geocoder,
-            proximityRange: markerRadius.radius,
         });
     }
 
@@ -210,6 +197,48 @@ class MapView extends React.Component {
         if(this.props.onProximityChange) {
             this.props.onProximityChange(proximityValue);
         }
+    }
+
+    onGeocodeSuccess(position) {
+        console.log(position);
+        const latLng = new window.google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        // Creates marker
+        let marker = new window.google.maps.Marker({
+            map: this.state.map,
+            animation: window.google.maps.Animation.DROP,
+            position: latLng
+        });
+
+        getNearbyFood(position.coords.latitude, position.coords.longitude).then(data => {
+            console.log(data.data.results);
+            const markers = [];
+            data.data.results.forEach(result => {
+                let marker = new window.google.maps.Marker({
+                    map: this.state.map,
+                    animation: window.google.maps.Animation.DROP,
+                    position: latLng
+                });
+            })
+        });
+
+        let markerRadius = new window.google.maps.Circle({
+            strokeColor: '#F7931E',
+            strokeOpacity: 0.4,
+            strokeWeight: 2,
+            fillColor: '#F7931E',
+            fillOpacity: 0.3,
+            map: this.state.map,
+            center: latLng,
+            radius: 200
+        });
+
+        this.setState({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+            marker: marker,
+            markerRadius: markerRadius,
+            proximityRange: markerRadius.radius,
+        });
     }
 }
 

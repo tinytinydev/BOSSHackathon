@@ -24,9 +24,12 @@
 
 .mapContainer {
   width: 100%;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -999999999;
 }
 
 .map {
-  height: 55vh;
+  height: 100vh;
 }
