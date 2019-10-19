@@ -17,12 +17,12 @@ router.use(express.json())
 
 
 //Get all locations
-router.get('/getnearbyfood/latlong/:latlong',function(req,resp){
+router.get('/getnearbyfood/latlong/:latlong',function(request,resp){
 
-    var allRest = googleMapAPI + "&type=restaurant&location="+req.params.latlong + "&radius=1500";
-    console.log(allRest)
+    var nearbyRest = googleMapAPI + "&type=restaurant&location="+request.params.latlong + "&radius=1500";
+    console.log(nearbyRest)
 
-    https.get(allRest, function (res) {
+    https.get(nearbyRest, function (res) {
         var json = '';
         res.on('data', function (chunk) {
             json += chunk;
@@ -45,6 +45,33 @@ router.get('/getnearbyfood/latlong/:latlong',function(req,resp){
           console.log('Error:', err);
     });
 })
+
+router.get('/nearbycusine/cusine/:cusine/latlong/:latlong',function(request,response){
+
+        var nearbyRestwCusine = googleMapAPI + "&type=restaurant&location="+request.params.latlong + "&radius=1500" + "&keyword=" + request.params.cusine;
+        https.get(nearbyRestwCusine, function (res) {
+        var json = '';
+        res.on('data', function (chunk) {
+            json += chunk;
+        });
+        res.on('end', function () {
+            if (res.statusCode === 200) {
+                try {
+                    var data = JSON.parse(json);
+                    // data is available here:
+                    console.log(data);
+                    response.send(data)
+                } catch (e) {
+                    console.log('Error parsing JSON!');
+                }
+            } else {
+                console.log('Status:', res.statusCode);
+            }
+        });
+    }).on('error', function (err) {
+          console.log('Error:', err);
+    });
+});
 
 router.get('/',function (req,res){
     res.send('hello world')
