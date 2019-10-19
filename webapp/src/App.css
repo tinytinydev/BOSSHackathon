@@ -33,3 +33,23 @@
 .map {
   height: 100vh;
 }
+
+.appBar{
+  background-color: #EB422D;
+
+}
+
+.toolBar{
+  height: 8vh;
+}
+
+.iconButton{
+  height: inherit;
+}
+
+.whiteText{
+  margin-left: 10px;
+  font-size: 15px;
+  color: white;
+  height: inherit;
+}
