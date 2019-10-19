@@ -202,12 +202,6 @@ class MapView extends React.Component {
     onGeocodeSuccess(position) {
         console.log(position);
         const latLng = new window.google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        // Creates marker
-        let marker = new window.google.maps.Marker({
-            map: this.state.map,
-            animation: window.google.maps.Animation.DROP,
-            position: latLng
-        });
 
         getNearbyFood(position.coords.latitude, position.coords.longitude).then(data => {
             console.log(data.data.results);
@@ -216,28 +210,15 @@ class MapView extends React.Component {
                 let marker = new window.google.maps.Marker({
                     map: this.state.map,
                     animation: window.google.maps.Animation.DROP,
-                    position: latLng
+                    position: result.geometry.location
                 });
+                markers.push(marker);
             })
-        });
-
-        let markerRadius = new window.google.maps.Circle({
-            strokeColor: '#F7931E',
-            strokeOpacity: 0.4,
-            strokeWeight: 2,
-            fillColor: '#F7931E',
-            fillOpacity: 0.3,
-            map: this.state.map,
-            center: latLng,
-            radius: 200
         });
 
         this.setState({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
-            marker: marker,
-            markerRadius: markerRadius,
-            proximityRange: markerRadius.radius,
         });
     }
 }
