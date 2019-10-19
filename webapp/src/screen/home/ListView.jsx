@@ -12,7 +12,6 @@ class ListView extends React.Component {
         if(!this.props.nearbyFoodPlaces) {
             return <React.Fragment/>
         } else {
-            console.log(this.props.nearbyFoodPlaces);
             return (
                 <React.Fragment>
                     <Container className="listContainer">

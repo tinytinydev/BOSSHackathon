@@ -18,11 +18,8 @@ class BaseView extends React.Component {
 
     render() {
         return (
-            <div>
-
-
+            <div className="AppContainer">
                 <TemporaryDrawer></TemporaryDrawer>
-                <h1>Hi</h1>
                 <ListView nearbyFoodPlaces={this.state.nearbyFoodPlaces}/>
                 <MapView onNearbyFoodPlacesChangeListener={this.onNearbyFoodPlacesChange}/>
             </div>
