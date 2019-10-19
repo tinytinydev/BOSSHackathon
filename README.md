@@ -5,13 +5,13 @@
 2. webapp - Mobile friendly webapp to display search result
 
 ### Starting the Project
-1. expressServer - node app.js (Main url: localhost:3001/)
 
+For both projects please run "npm install" first.
+
+1. expressServer - node app.js (Main url: localhost:3001/) [Backend Server]
+2. Webapp - npm start [Frontend Web App] --> Please look at it in mobile view =)
 
 ## References
-
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+### 2 End Points
+localhost:3001/locations/getnearbyfood/latlong/:latlong  - Obtain Nearbyfood
+/locations/nearbycusine/cusine/:cusine/latlong/:latlong - Obtaib Nearbyfood with Search Terms
