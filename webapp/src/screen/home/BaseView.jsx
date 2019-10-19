@@ -12,7 +12,7 @@ class BaseView extends React.Component {
 
         this.state = ({
             nearbyFoodPlaces: [],
-            userSearch: ""
+            userSearch: "",
             showList: false
         });
 
@@ -24,32 +24,25 @@ class BaseView extends React.Component {
     showList = () =>{
         console.log("setted")
         this.setState({
-            showList: true
+            showList: !this.state.showList
         })
     }
 
 
     render() {
-        /*return (
+        return (
             <div className="AppContainer">
-                <TemporaryDrawer></TemporaryDrawer>
+                <TemporaryDrawer onUserSearchListener={this.onUserSearch}/>
 
                 {
                     this.state.showList ? <ListView nearbyFoodPlaces={this.state.nearbyFoodPlaces}/> : null
                 }
 
-                <MapView onNearbyFoodPlacesChangeListener={this.onNearbyFoodPlacesChange}/>
+                <MapView onNearbyFoodPlacesChangeListener={this.onNearbyFoodPlacesChange} userSearchQuery={this.state.userSearch}/>
                 <div class="bottomRightBtn">
                 <Fab onClick={this.showList} style={{margin:5}} color="primary" aria-label="add"><ListIcon /></Fab>
                 </div>
 
-            </div>
-
-        );*/
-        return (
-            <div className="AppContainer">
-                <TemporaryDrawer onUserSearchListener={this.onUserSearch}/>
-                <MapView onNearbyFoodPlacesChangeListener={this.onNearbyFoodPlacesChange} userSearchQuery={this.state.userSearch}/>
             </div>
 
         );

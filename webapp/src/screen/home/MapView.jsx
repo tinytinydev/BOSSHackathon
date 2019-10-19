@@ -1,6 +1,6 @@
 import React from 'react';
 import * as API from "../../constants/APIUtil";
-import {getNearbyFood} from "../../service/Maps";
+import {getNearbyFood, getNearbyFoodBySearch} from "../../service/Maps";
 
 
 
@@ -45,7 +45,40 @@ class MapView extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if(prevProps.userSearchQuery != this.props.userSearchQuery) {
-            console.log("change");
+            if (this.props.userSearchQuery === "") {
+                this.retrieveNearbyFoodPlaces(this.state.lat, this.state.lng);
+            } else {
+                getNearbyFoodBySearch(this.props.userSearchQuery, this.state.lat, this.state.lng).then(result => {
+                    const markers = this.state.markers;
+                    markers.forEach((marker) => {
+                        marker.setMap(null);
+                    });
+
+                    result.data.results.forEach(result => {
+                        let infoWindow = new window.google.maps.InfoWindow({
+                            content: result.name
+                        });
+                        let marker = new window.google.maps.Marker({
+                            map: this.state.map,
+                            animation: window.google.maps.Animation.DROP,
+                            position: result.geometry.location,
+                            title: result.name,
+                        });
+                        marker.addListener('click', function() {
+                            infoWindow.open(marker.getMap(), marker);
+                        });
+                        markers.push(marker);
+                    });
+
+                    this.setState({
+                        markers: markers,
+                        nearbyFoodPlaces: result.data.results
+                    }, () => {
+                        this.props.onNearbyFoodPlacesChangeListener(result.data.results);
+                    })
+                });
+            }
+
         }
     }
 
@@ -240,6 +273,8 @@ class MapView extends React.Component {
         });
 
         this.setState({
+            lat: latitude,
+            lng: longitude,
             markers: markers,
             nearbyFoodPlaces: nearbyFoodPlaces.data.results
         }, () => {
