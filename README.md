@@ -1,5 +1,8 @@
 # BOSSHackathon- Team Tiagong
 
+## About
+This Repo is created to host backend server and front-end web for hackathon by Bank of Singapore
+
 ## Project Artefacts
 1. expressServer - Backend calling Google Map API
 2. webapp - Mobile friendly webapp to display search result
